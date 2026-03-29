@@ -1,0 +1,910 @@
+<!DOCTYPE html>
+<!-- HTML5文档声明，定义文档类型为HTML -->
+<html lang="zh-CN">
+<!-- 页面语言设置为简体中文 -->
+<head>
+    <!-- 头部区域：包含页面元数据、样式、标题等，不直接显示在页面 -->
+    <meta charset="UTF-8">
+    <!-- 设置字符编码为UTF-8，支持所有语言字符，防止乱码 -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <!-- 移动端适配：宽度=设备宽度，初始缩放1.0，禁止用户缩放 -->
+    <title>翁开奇个人简历网站</title>
+    <!-- 浏览器标签页显示的标题 -->
+    <style>
+        /* 全局样式重置与基础设置 */
+        * {
+            margin: 0; /* 清除所有元素默认外边距 */
+            padding: 0; /* 清除所有元素默认内边距 */
+            box-sizing: border-box; /* 内减模式：边框和内边距不撑开元素宽度 */
+            /* 定义字体优先级：微软雅黑 > 系统默认字体 */
+            font-family: "Microsoft Yahei", "Segoe UI", "PingFang SC", Roboto, sans-serif;
+            /* 统一过渡动画：背景色、文字色、边框色、阴影 过渡时间0.25秒 */
+            transition: background-color 0.25s ease, color 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        /* 根元素：定义亮色模式CSS变量，方便全局调用颜色/样式 */
+        :root {
+            --bg-body: #f8fafc; /* 页面背景色 */
+            --header-bg: linear-gradient(95deg, #b8f2d4, #9cd6ff); /* 头部渐变背景 */
+            --header-text: #1e3c2c; /* 头部主文字颜色 */
+            --header-sub: #2c5a3e; /* 头部副标题文字颜色 */
+            --nav-color: #1f2e2a; /* 导航默认文字色 */
+            --nav-active-border: #1f5e3a; /* 导航选中底部边框色 */
+            --nav-hover-color: #0f3b24; /* 导航悬浮文字色 */
+            --sidebar-bg: #ffffff; /* 侧边栏背景色 */
+            --sidebar-shadow: 0 15px 30px rgba(0, 0, 0, 0.05); /* 侧边栏阴影 */
+            --contact-bg: #faf9f4; /* 联系信息背景色 */
+            --self-border: #f29b6e; /* 自我评价左侧边框色 */
+            --notebook-border: #e2e8f0; /* 内容区域边框色 */
+            --notebook-bg: #ffffff; /* 内容区域背景色 */
+            --notebook-shadow: 0 12px 28px rgba(0, 0, 0, 0.05); /* 内容区域阴影 */
+            --text-primary: #1f2a1e; /* 主文字颜色 */
+            --footer-bg: #f1f5e9; /* 页脚背景色 */
+            --footer-text: #779a7a; /* 页脚文字色 */
+            --highlight-bg: #ffecb3; /* 搜索高亮背景色 */
+            --highlight-color: #b45f1b; /* 搜索高亮文字色 */
+            --search-box-bg: #f26b4b; /* 搜索框背景色 */
+            --search-input-text: #ffffff; /* 搜索输入框文字色 */
+            --search-placeholder: rgba(255, 255, 245, 0.85); /* 搜索框提示文字色 */
+            --btn-dark-mode: #f26b4b; /* 暗黑模式按钮颜色 */
+            --btn-dark-hover: #e05a3a; /* 按钮悬浮颜色 */
+        }
+
+        /* 暗黑模式样式：覆盖根变量，切换页面配色 */
+        body.dark-mode {
+            --bg-body: #121212;
+            --header-bg: linear-gradient(95deg, #1f3b2c, #1e3a5f);
+            --header-text: #d4f0e0;
+            --header-sub: #b6e0cc;
+            --nav-color: #cfddd6;
+            --nav-active-border: #7bcfa3;
+            --nav-hover-color: #e2ffe6;
+            --sidebar-bg: #1e2a24;
+            --sidebar-shadow: 0 15px 30px rgba(0, 0, 0, 0.4);
+            --contact-bg: #2a3630;
+            --self-border: #f0a07c;
+            --notebook-border: #2e3e38;
+            --notebook-bg: #1f2c26;
+            --notebook-shadow: 0 12px 28px rgba(0, 0, 0, 0.6);
+            --text-primary: #e2f0e6;
+            --footer-bg: #1f2a22;
+            --footer-text: #8caa8f;
+            --highlight-bg: #7d633a;
+            --highlight-color: #ffeaaf;
+            --search-box-bg: #e05a3a;
+            --search-input-text: #fff2e0;
+            --search-placeholder: #ffe6cf;
+            --btn-dark-mode: #ff8c5a;
+            --btn-dark-hover: #ffa06e;
+        }
+
+        /* 页面主体基础样式 */
+        body {
+            background: var(--bg-body); /* 调用变量设置背景色 */
+            line-height: 1.6; /* 行高，提升文字可读性 */
+        }
+
+        /* 欢迎屏样式：页面加载完成前的过渡动画屏 */
+        .welcome-screen {
+            position: fixed; /* 固定定位，覆盖整个屏幕 */
+            top: 0;
+            left: 0;
+            width: 100vw; /* 宽度=视口宽度 */
+            height: 100vh; /* 高度=视口高度 */
+            background: linear-gradient(145deg, #fff9ef 0%, #fff5e6 100%); /* 渐变背景 */
+            display: flex; /* 弹性布局，居中内容 */
+            flex-direction: column; /* 垂直排列 */
+            justify-content: center; /* 垂直居中 */
+            align-items: center; /* 水平居中 */
+            z-index: 10000; /* 最高层级，覆盖所有元素 */
+            overflow: hidden; /* 隐藏溢出内容 */
+            transition: opacity 0.6s cubic-bezier(0.2, 0.9, 0.4, 1.1); /* 消失过渡动画 */
+            pointer-events: auto; /* 允许点击事件 */
+        }
+
+        /* 欢迎屏淡出样式 */
+        .welcome-screen.fade-out {
+            opacity: 0; /* 透明度为0，隐藏 */
+            pointer-events: none; /* 禁止点击事件 */
+        }
+
+        /* 欢迎屏头像容器样式 */
+        .crane-wrapper {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            transform-origin: center; /* 缩放原点为中心 */
+            transition: all 0.05s linear;
+            will-change: transform, opacity; /* 优化动画性能 */
+        }
+
+        /* 欢迎屏头像样式 */
+        .welcome-avatar {
+            width: 200px;
+            height: 200px;
+            border-radius: 40px; /* 圆角 */
+            object-fit: cover; /* 图片等比例填充 */
+            box-shadow: 0 20px 30px rgba(0, 0, 0, 0.1); /* 阴影 */
+            background: #fce4b6;
+            transition: all 0.4s ease;
+        }
+
+        /* 欢迎文字样式 */
+        .welcome-text {
+            margin-top: 32px;
+            font-size: 52px;
+            font-weight: bold;
+            font-family: "STKaiti", "KaiTi", "华文楷书", cursive; /* 楷书字体 */
+            color: #c27e3a;
+            text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.05); /* 文字阴影 */
+            letter-spacing: 2px; /* 字间距 */
+            opacity: 0; /* 默认隐藏 */
+            transform: translateY(20px); /* 向下偏移20px */
+            transition: opacity 0.9s ease, transform 0.7s ease; /* 入场动画 */
+            text-align: center;
+        }
+
+        /* 欢迎文字显示样式：执行入场动画 */
+        .welcome-text.show {
+            opacity: 1;
+            transform: translateY(0); /* 回到原位置 */
+        }
+
+        /* 头像飞走动画类 */
+        .fly-away {
+            animation: craneFly 1s cubic-bezier(0.33, 1, 0.68, 1) forwards !important;
+        }
+
+        /* 定义头像飞走关键帧动画 */
+        @keyframes craneFly {
+            0% { transform: scale(1); opacity: 1; } /* 初始状态：正常大小，完全显示 */
+            100% { transform: scale(0.1); opacity: 0; visibility: hidden; } /* 结束状态：缩小、隐藏 */
+        }
+
+        /* 头部导航栏整体样式 */
+        .header {
+            display: flex;
+            align-items: center; /* 垂直居中 */
+            background: var(--header-bg);
+            padding: 12px 32px; /* 内边距 */
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.02);
+            flex-wrap: wrap; /* 自动换行，适配移动端 */
+            gap: 16px; /* 元素间距 */
+        }
+
+        /* 头部logo区域样式 */
+        .header-logo {
+            display: flex;
+            align-items: center;
+            margin-right: 48px; /* 右侧外边距 */
+        }
+
+        /* 头部logo图片样式 */
+        .header-logo img {
+            width: 52px;
+            height: 52px;
+            border-radius: 50%; /* 圆形图片 */
+            object-fit: cover;
+            margin-right: 12px;
+            border: 2px solid white; /* 白色边框 */
+        }
+
+        /* 头部logo文字样式 */
+        .header-logo-text h1 {
+            font-size: 24px;
+            font-weight: 600;
+            letter-spacing: 1px;
+            color: var(--header-text);
+        }
+
+        .header-logo-text p {
+            font-size: 15px;
+            color: var(--header-sub);
+            font-weight: 500;
+        }
+
+        /* 导航标签容器样式 */
+        .nav-tabs {
+            display: flex;
+            gap: 32px;
+            margin-right: auto; /* 自动靠右对齐 */
+            flex-wrap: wrap;
+        }
+
+        /* 单个导航标签样式 */
+        .nav-tab {
+            font-size: 17px;
+            font-weight: 500;
+            color: var(--nav-color);
+            cursor: pointer; /* 鼠标悬浮变为小手 */
+            padding: 6px 0;
+            transition: all 0.25s;
+            border-bottom: 2px solid transparent; /* 底部透明边框 */
+            white-space: nowrap; /* 文字不换行 */
+        }
+
+        /* 导航标签选中状态样式 */
+        .nav-tab.active {
+            font-weight: 700;
+            border-bottom: 2px solid var(--nav-active-border);
+            color: var(--nav-active-border);
+        }
+
+        /* 导航标签悬浮状态样式 */
+        .nav-tab:hover {
+            color: var(--nav-hover-color);
+            border-bottom: 2px solid #8bcfa3;
+        }
+
+        /* 头部右侧功能区（搜索/下载/暗黑模式）样式 */
+        .right-actions {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-left: auto;
+        }
+
+        /* 搜索框样式 */
+        .search-box {
+            display: flex;
+            align-items: center;
+            background: var(--search-box-bg);
+            border-radius: 40px; /* 胶囊形状 */
+            padding: 5px 16px;
+            gap: 8px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        /* 搜索输入框样式 */
+        .search-box input {
+            border: none; /* 无边框 */
+            background: transparent; /* 透明背景 */
+            color: var(--search-input-text);
+            outline: none; /* 清除选中高亮边框 */
+            padding: 6px 0;
+            width: 160px;
+            font-size: 14px;
+        }
+
+        /* 搜索框占位文字样式 */
+        .search-box input::placeholder {
+            color: var(--search-placeholder);
+            font-style: italic; /* 斜体 */
+        }
+
+        /* 搜索按钮样式 */
+        .search-box button {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 18px;
+            cursor: pointer;
+            transition: transform 0.1s;
+        }
+
+        /* 下载简历按钮样式 */
+        .download-btn {
+            background: var(--search-box-bg);
+            border: none;
+            border-radius: 50%; /* 圆形按钮 */
+            width: 44px;
+            height: 44px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 22px;
+            cursor: pointer;
+            color: white;
+            transition: all 0.2s ease;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+        /* 下载按钮悬浮效果 */
+        .download-btn:hover {
+            background: var(--btn-dark-hover);
+            transform: scale(0.96); /* 轻微缩小 */
+        }
+
+        /* 暗黑模式切换按钮样式（同下载按钮） */
+        .darkmode-toggle {
+            background: var(--search-box-bg);
+            border: none;
+            border-radius: 50%;
+            width: 44px;
+            height: 44px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 22px;
+            cursor: pointer;
+            color: white;
+            transition: all 0.2s ease;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .darkmode-toggle:hover {
+            background: var(--btn-dark-hover);
+            transform: scale(0.96);
+        }
+
+        /* 主体内容容器样式（侧边栏+内容区） */
+        .main-container {
+            display: flex;
+            padding: 40px 36px;
+            gap: 40px;
+            max-width: 1400px; /* 最大宽度，防止大屏过宽 */
+            margin: 0 auto; /* 水平居中 */
+        }
+
+        /* 侧边栏样式 */
+        .sidebar {
+            width: 300px;
+            background: var(--sidebar-bg);
+            border-radius: 32px;
+            padding: 28px 20px;
+            text-align: center; /* 文字居中 */
+            box-shadow: var(--sidebar-shadow);
+        }
+
+        /* 侧边栏头像样式 */
+        .sidebar .avatar {
+            width: 160px;
+            height: 160px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-bottom: 10px;
+            border: 4px solid #dcfce7;
+        }
+
+        /* 侧边栏姓名样式 */
+        .sidebar h2 {
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 8px;
+            color: var(--header-text);
+        }
+
+        /* 联系信息样式 */
+        .contact-info {
+            text-align: left; /* 左对齐 */
+            margin: 10px 0;
+            font-size: 15px;
+            line-height: 2;
+            background: var(--contact-bg);
+            padding: 12px 16px;
+            border-radius: 24px;
+            color: var(--text-primary);
+        }
+
+        /* 自我评价区域样式 */
+        .self-evaluation {
+            text-align: left;
+            margin-top: 24px;
+        }
+
+        /* 自我评价标题样式 */
+        .self-evaluation h3 {
+            font-size: 20px;
+            font-weight: 700;
+            margin-bottom: 14px;
+            border-left: 5px solid var(--self-border); /* 左侧彩色边框 */
+            padding-left: 12px;
+            color: var(--header-text);
+        }
+
+        /* 自我评价列表样式 */
+        .self-evaluation ul {
+            list-style: none; /* 清除默认列表圆点 */
+            font-size: 14px;
+            line-height: 1.7;
+            color: var(--text-primary);
+        }
+
+        .self-evaluation li {
+            margin-bottom: 6px;
+        }
+
+        /* 主内容区域样式 */
+        .content-area {
+            flex: 1; /* 自动填充剩余宽度 */
+        }
+
+        /* 内容笔记本样式 */
+        .notebook {
+            border: 2px solid var(--notebook-border);
+            border-radius: 32px;
+            padding: 30px 32px;
+            background: var(--notebook-bg);
+            box-shadow: var(--notebook-shadow);
+            position: relative;
+        }
+
+        /* 内容标题样式 */
+        .notebook h2 {
+            font-size: 36px;
+            text-align: center;
+            margin-bottom: 28px;
+            font-weight: 800;
+            /* 渐变文字效果 */
+            background: linear-gradient(135deg, #2b6e47, #f0985e);
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+        }
+
+        /* 内容文字样式 */
+        .notebook .content {
+            font-size: 16px;
+            line-height: 1.75;
+            color: var(--text-primary);
+        }
+
+        /* 搜索高亮文字样式 */
+        .highlight {
+            background-color: var(--highlight-bg);
+            color: var(--highlight-color);
+            font-weight: 600;
+            padding: 0 4px;
+            border-radius: 8px;
+        }
+
+        /* 页脚样式 */
+        .footer {
+            text-align: center;
+            padding: 10px;
+            font-size: 13px;
+            color: var(--footer-text);
+            background: var(--footer-bg);
+            margin-top: 1px;
+        }
+
+        /* 全局图片样式 */
+        img {
+            max-width: 100%; /* 图片自适应宽度 */
+            border-radius: 20px;
+            object-fit: cover;
+        }
+
+        /* ==================== 证书轮播样式 ==================== */
+        .certificate-slider {
+            margin: 24px auto 0;
+            width: 900px; /* 约3张图片宽度，居中显示 */
+            overflow: hidden;
+            position: relative;
+            border-radius: 16px;
+        }
+        .certificate-track {
+            display: flex;
+            gap: 16px;
+            width: max-content;
+            animation: scrollLeft 25s linear infinite;
+        }
+        .certificate-track img {
+            height: 180px;
+            width: auto;
+            object-fit: contain;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            background: #fff;
+        }
+        @keyframes scrollLeft {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
+        }
+
+        /* 移动端响应式样式：屏幕宽度≤800px时生效 */
+        @media (max-width: 800px) {
+            .main-container {
+                flex-direction: column; /* 垂直排列 */
+                padding: 24px;
+            }
+
+            .sidebar {
+                width: 100%; /* 侧边栏铺满宽度 */
+            }
+
+            .nav-tabs {
+                gap: 16px;
+                margin-top: 10px;
+                margin-right: 0;
+            }
+
+            .header {
+                flex-direction: column;
+                align-items: flex-start;
+                padding: 16px 20px;
+            }
+
+            .right-actions {
+                align-self: flex-end;
+                margin-top: 6px;
+            }
+
+            .welcome-text {
+                font-size: 32px; /* 缩小欢迎文字 */
+            }
+
+            .welcome-avatar {
+                width: 150px;
+                height: 150px; /* 缩小头像 */
+            }
+
+            .search-box input {
+                width: 120px; /* 缩小搜索框 */
+            }
+        }
+
+        /* 全局按钮样式 */
+        button {
+            cursor: pointer;
+            -webkit-tap-highlight-color: transparent; /* 清除移动端点击高亮 */
+        }
+
+        /* 工具提示基础样式 */
+        .tooltip {
+            position: relative;
+        }
+        /* 工具提示内容样式 */
+        .tooltip::after {
+            content: attr(data-tooltip); /* 获取自定义属性文字 */
+            position: absolute;
+            bottom: -32px;
+            left: 50%;
+            transform: translateX(-50%); /* 水平居中 */
+            background: #333;
+            color: #fff;
+            padding: 4px 10px;
+            border-radius: 6px;
+            font-size: 12px;
+            white-space: nowrap;
+            opacity: 0; /* 默认隐藏 */
+            pointer-events: none; /* 不占用点击区域 */
+            transition: opacity 0.2s ease;
+            z-index: 999;
+        }
+        /* 鼠标悬浮显示工具提示 */
+        .tooltip:hover::after {
+            opacity: 1;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- 欢迎屏：页面加载动画区域 -->
+    <div class="welcome-screen" id="welcomeScreen">
+        <div class="crane-wrapper" id="craneWrapper">
+            <img src="img/qz.png" alt="奇崽" class="welcome-avatar" id="welcomeAvatar">
+            <div class="welcome-text" id="welcomeText">欢迎来到翁开奇的简历网站</div>
+        </div>
+    </div>
+
+    <!-- 页面头部：logo+导航+功能按钮 -->
+    <header class="header">
+        <div class="header-logo">
+            <img src="img/qz.png" alt="头像">
+            <div class="header-logo-text">
+                <h1>翁开奇简历</h1>
+                <p>个人网站</p>
+            </div>
+        </div>
+
+        <!-- 导航标签组：切换不同简历内容 -->
+        <nav class="nav-tabs">
+            <div class="nav-tab active" data-tab="education">教育背景</div>
+            <div class="nav-tab" data-tab="experience">在校经历</div>
+            <div class="nav-tab" data-tab="internship">实习经历</div>
+            <div class="nav-tab" data-tab="honor">个人荣誉</div>
+            <div class="nav-tab" data-tab="competition">学科竞赛</div>
+            <div class="nav-tab" data-tab="graduation">毕业设计</div>
+        </nav>
+
+        <!-- 右侧功能区：搜索、下载、暗黑模式 -->
+        <div class="right-actions">
+            <div class="search-box tooltip" data-tooltip="搜索功能">
+                <input type="text" id="searchInput" placeholder="搜索简历内容...">
+                <button id="searchBtn">🔍</button>
+            </div>
+            <button id="downloadBtn" class="download-btn tooltip" data-tooltip="下载简历" aria-label="下载简历PDF">📄</button>
+            <button id="darkModeToggle" class="darkmode-toggle tooltip" data-tooltip="模式切换" aria-label="切换暗黑模式">🌓</button>
+        </div>
+    </header>
+
+    <!-- 主体内容容器 -->
+    <div class="main-container">
+        <!-- 侧边栏：个人信息+联系方式+自我评价 -->
+        <aside class="sidebar">
+            <img src="img/wkq.jpg" alt="翁开奇" class="avatar">
+            <h2>翁开奇</h2>
+            <div class="contact-info">
+                <p>📍 籍贯: 福建省福鼎市</p>
+                <p>📫 邮箱: 430343381@qq.com</p>
+                <p>📞 电话: 13115939130</p>
+            </div>
+            <div class="self-evaluation">
+                <h3>自我评价</h3>
+                <ul>
+                    <li>➢ 注重细节把控，深耕专业领域，坚持理论与实践相结合</li>
+                    <li>➢ 熟练各类办公软件、专业软件，团队协作意识强</li>
+                    <li>➢ 勇于迎接复杂项目挑战，学习能力扎实，适应力强</li>
+                </ul>
+            </div>
+        </aside>
+
+        <!-- 主内容展示区：动态渲染导航标签内容 -->
+        <main class="content-area">
+            <div class="notebook">
+                <h2 id="notebookTitle"></h2>
+                <div class="content" id="notebookContent"></div>
+            </div>
+        </main>
+    </div>
+
+    <!-- 页脚：版权信息 -->
+    <footer class="footer">
+        <strong>© 制作人：翁开奇 &nbsp｜&nbsp 代码AI优化 &nbsp｜&nbsp 更新于 2026-03-29</strong>
+    </footer>
+
+    <script>
+        // ==================== 1. 获取DOM元素 ====================
+        // 欢迎屏相关元素
+        const welcomeScreen = document.getElementById('welcomeScreen');
+        const craneWrapper = document.getElementById('craneWrapper');
+        const welcomeTextDiv = document.getElementById('welcomeText');
+        const welcomeAvatar = document.getElementById('welcomeAvatar');
+        
+        // 导航与内容区域元素
+        const tabs = document.querySelectorAll('.nav-tab');
+        const notebookTitle = document.getElementById('notebookTitle');
+        const notebookContent = document.getElementById('notebookContent');
+        
+        // 功能按钮元素
+        const searchInput = document.getElementById('searchInput');
+        const searchBtn = document.getElementById('searchBtn');
+        const darkModeToggle = document.getElementById('darkModeToggle');
+        const downloadBtn = document.getElementById('downloadBtn');
+
+        // ==================== 2. 定义导航对应的内容数据 ====================
+        // 对象存储所有导航标签的标题和内容，方便动态渲染
+        const tabContents = {
+            education: {
+                title: '📖 教育背景',
+                content: '<strong>宁德师范学院 | 信息工程学院 | 电子信息工程 | 2021年9月-2025年6月 | 全日制本科 | 工学学士学位</strong><br>\
+                ➢ <strong>主修课程</strong>：嵌入式操作系统（Linux）、电子系统设计（电路板制图）、EDA技术及应用（VHDL）、C语言、JAVA语言、单片机设计、移动应用软件开发、模拟和数字电子技术基础、电路分析、计算机网络等<br>\
+                ➢ <strong>平均学分绩点</strong>: 3.48/4.0，班级排名第一<br>\
+                <div style="text-align:center; margin-top:20px;"><img src="img/school.png" style="max-width:85%; border-radius: 20px; box-shadow: 0 4px 12px rgba(0,0,0,0.1);" alt="校园风光"></div>'
+            },
+            experience: {
+                title: '🏫 在校经历',
+                content: '<strong>2021.09-2022.09：电信21(1)班副班长</strong><br>\
+                ➢ 负责班级日常事务管理，组织班级活动，增强班级凝聚力<br><br>\
+                <strong>2021.09-2023.09：后山夜校社团小组成员</strong><br>\
+                ➢ 定期参与后山村支教活动，为后山村的学生提供学习辅导和兴趣教学，已累计服务超40小时'
+            },
+            internship: {
+                title: '💼 实习经历',
+                content: '<strong>2025.01-2025.05：宁德时代新能源科技股份有限公司（时代润智）——IT部门实习生</strong><br>\
+                ➢ 负责IT运维工单数据采集，运用BI工具完成数据清洗与分析，搭建可视化面板<br>\
+                ➢ 参与ITSM工单运维系统的功能测试，撰写测试报告，保障系统稳定上线<br>\
+                ➢ 梳理ITSM、变更管理等核心运维系统全流程逻辑，完善标准化SOP操作文档，规范团队运维流程<br>\
+                ➢ 协助ITSM工单系统日常运维，排查流程卡点，保障工单高效顺畅流转<br>\
+                ➢ 运维IT机器人的数据库，持续完善AI知识库并推动迭代优化<br>\
+                <div style="text-align:center; margin-top:18px;"><img src="img/internship.png" style="max-width:45%; border-radius: 20px;" alt="实习现场"></div>'
+            },
+            honor: {
+                title: '🏆 个人荣誉',
+                content: '➢ 2023-2024学年：荣获国家奖学金<br>\
+                ➢ 2023-2024学年：荣获国家级2024年（第17届）中国大学生计算机设计大赛二等奖<br>\
+                ➢ 2022-2023学年：荣获省级中国书画家联谊会第三届青少年书画大展美术作品二等奖（入选）<br>\
+                ➢ 2021-2024学年：荣获校级优秀学生一等奖学金和优秀学生综合二等奖学金<br>\
+                ➢ 2021-2024学年：荣获校级“三好学生”称号和“优秀学生干部”称号<br>\
+                ➢ 2022-2023学年：荣获校级2023年CMAU全国大学生市场研究与商业策划大赛二等奖<br>\
+                ➢ 2023.05：普通话水平等级证书——二级乙等<br>\
+                ➢ 2024.04：“缘起 | 看见”益童前行关爱留守儿童支教计划“优秀志愿者”称号<br>\
+                ➢ 2024.07：计算机软件著作权——绿意智控生活盆栽系统<br><br>\
+                <div class="certificate-slider"><div class="certificate-track" id="certificateTrack"></div></div>'
+            },
+            competition: {
+                title: '⚙️ 学科竞赛',
+                content: '<strong>2024 年8月，凭借研发的《绿意智控：基于物联网与AI赋能的数字生活盆栽系统》，斩获2024 年（第17届）中国大学生计算机设计大赛国家级二等奖。该项目历时5个月，聚焦物联网与人工智能技术在智慧园艺领域的落地应用，打造出集自动化管控、智能交互于一体的数字盆栽解决方案</strong><br>\
+                ➢ 作为项目队长，牵头“绿意智控”嵌入式系统研发，明确项目定位与目标，统筹团队完成需求分析与技术方案落地。搭建物联网三层架构，主导PCB版图（运用嘉立创EDA工具）绘制与Proteus 仿真测试，采购STC89C52RC单片机等核心硬件，开发自动化算法，实现自动浇水、温度调控等核心功能，保障系统稳定运行<br>\
+                ➢ 负责核心技术攻坚与资源协调，推动AI功能创新。带领团队对接科大讯飞星火大模型与百度AI平台，开发语音助手与病虫害识别模块；主导Android端APP开发，集成数据可视化、远程操控功能，设计通信方案<br>\
+                ➢ 主导项目测试优化，制定全面测试方案，完成软硬件兼容性测试并迭代优化。牵头竞品分析，增加火焰预警、情感互动等特色功能，拓展多应用场景。统筹团队协作，整合技术资源，展现项目管理与攻坚能力'
+            },
+            graduation: {
+                title: '🎓 毕业设计',
+                content: '<strong>我的毕业设计作品是《基于单片机的智能宠物屋的设计与实现》</strong><br>\
+                ➢ 设计基于STC89C53RC单片机的智能宠物屋系统设计，搭建感知层、网络层、应用层三层架构，集成多类传感器完成温湿度、空气质量等多维数据采集，通过ESP32-CAM模块构建TCP通信链路，保障数据传输稳定，实现环境参数实时监测与设备智能联动<br>\
+                ➢ 系统软硬件协同开发，硬件端完成传感器、执行器等模块选型与电路设计，软件端编写嵌入式程序，运用中值滤波算法优化数据精度，开发移动端APP实现数据可视化、远程控制功能，接入AI大模型提供个性化养护建议<br>\
+                ➢ 开展系统全面测试与优化，完成功能测试（数据接收、定时控制等），解决通信延迟、数据偏差等问题，确保系统在温湿度调节、火灾预警等场景精准响应，为宠物行业智能化升级提供技术验证方案<br>\
+                <div style="text-align:center; margin-top:20px;"><img src="img/project.png" style="max-width:60%; border-radius: 0;" alt="宠物屋项目"></div>'
+            }
+        };
+
+        // ==================== 3. 图片加载失败处理函数 ====================
+        function handleImageError() {
+            // 遍历所有图片
+            document.querySelectorAll('img').forEach(img => {
+                img.onerror = function () {
+                    const alt = this.alt || 'img';
+                    // 根据图片类型，设置不同的默认占位图
+                    if (this.classList.contains('welcome-avatar')) {
+                        this.src = `https://placehold.co/200x200?text=${encodeURIComponent(alt)}`;
+                    } else if (this.classList.contains('avatar')) {
+                        this.src = 'https://placehold.co/160x160?text=WKQ';
+                    } else if (this.closest('.header-logo')) {
+                        this.src = 'https://placehold.co/52x52?text=Q';
+                    } else {
+                        this.style.display = 'none'; // 无占位图则隐藏
+                    }
+                };
+            });
+        }
+
+        // ==================== 4. 欢迎动画启动函数 ====================
+        function startWelcomeAnimation() {
+            // 延迟200ms显示欢迎文字
+            setTimeout(() => welcomeTextDiv.classList.add('show'), 200);
+            // 延迟1600ms执行头像飞走动画
+            setTimeout(() => {
+                craneWrapper.classList.add('fly-away');
+                // 延迟1000ms隐藏欢迎屏
+                setTimeout(() => {
+                    welcomeScreen.classList.add('fade-out');
+                    // 延迟400ms移除欢迎屏DOM
+                    setTimeout(() => welcomeScreen.remove(), 400);
+                }, 1000);
+            }, 1600);
+        }
+
+        // ==================== 5. 暗黑模式初始化函数 ====================
+        function initDarkMode() {
+            // 从本地存储获取主题，默认亮色
+            const theme = localStorage.getItem('wkq_theme') || 'light';
+            // 根据主题添加/移除暗黑模式类
+            document.body.classList.toggle('dark-mode', theme === 'dark');
+            // 更新暗黑模式按钮图标
+            updateDarkModeIcon();
+        }
+
+        // ==================== 6. 更新暗黑模式按钮图标 ====================
+        function updateDarkModeIcon() {
+            const isDark = document.body.classList.contains('dark-mode');
+            // 暗黑模式显示太阳，亮色模式显示月亮
+            darkModeToggle.textContent = isDark ? '☀️' : '🌓';
+            darkModeToggle.setAttribute('aria-label', isDark ? '切换亮色模式' : '切换暗黑模式');
+        }
+
+        // ==================== 7. 切换暗黑模式函数 ====================
+        function toggleDarkMode() {
+            // 切换body的暗黑模式类
+            const isDark = document.body.classList.toggle('dark-mode');
+            // 将主题保存到本地存储
+            localStorage.setItem('wkq_theme', isDark ? 'dark' : 'light');
+            // 更新按钮图标
+            updateDarkModeIcon();
+            // 重新渲染当前标签内容
+            renderCurrentTab(searchInput.value.trim());
+        }
+
+        // ==================== 8. 搜索文字高亮函数 ====================
+        function highlightText(html, keyword) {
+            // 无关键词直接返回原内容
+            if (!keyword.trim()) return html;
+            // 转义关键词特殊字符
+            const escaped = keyword.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+            const regex = new RegExp(`(${escaped})`, 'gi'); // 全局不区分大小写匹配
+            const temp = document.createElement('div');
+            temp.innerHTML = html;
+
+            // 递归遍历DOM节点，匹配文字并添加高亮样式
+            function walk(node) {
+                if (node.nodeType === 3) { // 文本节点
+                    if (regex.test(node.textContent)) {
+                        const frag = document.createDocumentFragment();
+                        let last = 0;
+                        let match;
+                        regex.lastIndex = 0;
+                        // 循环匹配所有关键词
+                        while ((match = regex.exec(node.textContent))) {
+                            if (match.index > last) frag.append(document.createTextNode(node.textContent.slice(last, match.index)));
+                            const span = document.createElement('span');
+                            span.className = 'highlight'; // 高亮样式
+                            span.textContent = match[0];
+                            frag.append(span);
+                            last = match.index + match[0].length;
+                        }
+                        if (last < node.textContent.length) frag.append(document.createTextNode(node.textContent.slice(last)));
+                        node.replaceWith(frag);
+                    }
+                } else if (node.nodeType === 1 && !['SCRIPT', 'STYLE', 'IMG'].includes(node.tagName)) {
+                    node.childNodes.forEach(walk); // 递归子节点
+                }
+            }
+            temp.childNodes.forEach(walk);
+            return temp.innerHTML;
+        }
+
+        // ==================== 9. 渲染当前选中标签内容 ====================
+        function renderCurrentTab(keyword = '') {
+            // 获取当前选中的导航标签
+            const active = document.querySelector('.nav-tab.active');
+            const key = active?.dataset.tab || 'education';
+            const data = tabContents[key];
+            if (!data) return;
+            // 设置标题和内容（带关键词高亮）
+            notebookTitle.textContent = data.title;
+            notebookContent.innerHTML = highlightText(data.content, keyword);
+
+            // 渲染证书轮播
+            if (key === 'honor') {
+                renderCertificateSlider();
+            }
+        }
+
+        // ==================== 10. 自动生成证书轮播图片 ====================
+        function renderCertificateSlider() {
+            const track = document.getElementById('certificateTrack');
+            if (!track) return;
+            let html = '';
+            // 生成 001 ~ 012
+            for (let i = 1; i <= 12; i++) {
+                const num = String(i).padStart(3, '0');
+                html += `<img src="certificate/${num}.jpg" alt="证书${num}">`;
+            }
+            // 无缝滚动：复制一份图片
+            track.innerHTML = html + html;
+        }
+
+        // ==================== 11. 导航标签初始化函数 ====================
+        function initTabs() {
+            // 为每个导航标签绑定点击事件
+            tabs.forEach(tab => {
+                tab.addEventListener('click', () => {
+                    // 清除所有标签选中状态
+                    tabs.forEach(t => t.classList.remove('active'));
+                    // 为当前点击标签添加选中状态
+                    tab.classList.add('active');
+                    // 清空搜索框
+                    searchInput.value = '';
+                    // 渲染对应内容
+                    renderCurrentTab();
+                });
+            });
+            // 默认渲染第一个标签
+            renderCurrentTab();
+        }
+
+        // ==================== 12. 搜索功能初始化函数 ====================
+        function initSearch() {
+            // 搜索执行函数
+            const search = () => renderCurrentTab(searchInput.value.trim());
+            // 点击搜索按钮执行搜索
+            searchBtn.addEventListener('click', search);
+            // 回车执行搜索
+            searchInput.addEventListener('keydown', e => e.key === 'Enter' && search());
+        }
+
+        // ==================== 13. 下载简历函数 ====================
+        function downloadResume() {
+            // 创建a标签
+            const link = document.createElement('a');
+            link.href = 'pdf/resume.pdf'; // 简历PDF路径
+            link.download = '翁开奇-个人简历-13115939130.pdf'; // 下载文件名
+            document.body.appendChild(link);
+            link.click(); // 模拟点击下载
+            document.body.removeChild(link); // 移除a标签
+        }
+
+        // ==================== 14. 页面加载完成后执行所有初始化 ====================
+        window.addEventListener('DOMContentLoaded', () => {
+            handleImageError();    // 图片异常处理
+            initDarkMode();        // 暗黑模式初始化
+            initTabs();            // 导航标签初始化
+            initSearch();          // 搜索功能初始化
+            darkModeToggle.addEventListener('click', toggleDarkMode); // 暗黑模式切换
+            downloadBtn.addEventListener('click', downloadResume);   // 下载简历
+            startWelcomeAnimation(); // 启动欢迎动画
+        });
+    </script>
+</body>
+</html>
